@@ -48,9 +48,24 @@ def add_book():
         return response
             
 
+# PATCH /books/isbn_number
+@app.route('/books/<int:isbn>', methods=['PATCH'])
+def update_book(isbn):
+    request_data = request.get_json()
+    updated_book = {}
 
-def update_book():
-    pass
+    if ("name" in request_data):
+        updated_book["name"] = request_data["name"]
+    
+    if ("price" in request_data):
+        updated_book["price"] = request_data["price"]
+
+    for book in books:
+        if book["isbn"] == isbn:
+            book.update(updated_book) 
+    response = Response("", status="204")
+    response.headers['Location'] ="/books" + str(isbn)
+    return response
 
 def replace_book(isbn):
     pass
