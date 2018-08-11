@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, Response
 
 app = Flask(__name__)
 
@@ -6,8 +6,10 @@ app = Flask(__name__)
 def hello_world():
     return 'Welcome to Open-Saturday!'
 
+# GET books
+@app.route('/books')
 def get_books():
-    pass
+    return jsonify({'books': books})
 
 def get_a_book():
     pass
@@ -26,5 +28,18 @@ def delete_book(isbn):
 
 def validate_book(bookObject):
     pass
+
+books = [
+    {
+        'name':'Becoming a World Class Dev',
+        'price':'45000',
+        'isbn':'12312312'
+    },
+    {
+        'name':'How to excel in Andela Bootcamp',
+        'price':'12500',
+        'isbn':'123142341'
+    }
+]
 
 app.run(port=5000)
