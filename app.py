@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, Response
+from flask import Flask, jsonify, request, Response, json
 
 app = Flask(__name__)
 
@@ -23,8 +23,31 @@ def get_a_book(isbn):
             }
     return jsonify(book)
 
+# POST /books
+@app.route('/books', methods=['POST'])
 def add_book():
-    pass
+    request_data  = request.get_json()
+    if (valid_book(request_data)):
+        book = {
+            'name': request_data['name'],
+            'price': request_data['price'],
+            'isbn': request_data['isbn']
+        }
+        books.append(book)
+        response = Response("", 201, mimetype="application/json")
+        response.headers['Location'] = "books/" + str(request_data['isbn'])
+        return response
+    else:
+        bad_object = {
+            "error": "Invalid book object",
+            "help_string":
+                "Request format should be {'name': 'Tha cat in the hat',"
+                "'price': '7.99','isbn': 12319881212 }"
+        }
+        response = Response(json.dumps(bad_object), status=400, mimetype="appliation/json")
+        return response
+            
+
 
 def update_book():
     pass
@@ -35,8 +58,11 @@ def replace_book(isbn):
 def delete_book(isbn):
     pass
 
-def validate_book(bookObject):
-    pass
+def valid_book(bookObject):
+    if "name" in bookObject and "price" in bookObject and "isbn" in bookObject:
+        return True
+    else:
+        return False
 
 books = [
     {
