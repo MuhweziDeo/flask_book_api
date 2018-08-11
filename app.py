@@ -11,8 +11,17 @@ def hello_world():
 def get_books():
     return jsonify({'books': books})
 
-def get_a_book():
-    pass
+# GET books/isbn_number
+@app.route('/books/<int:isbn>')
+def get_a_book(isbn):
+    book = {}
+    for item in books:
+        if item['isbn'] == isbn:
+            book = {
+                'name': item['name'],
+                'price': item['price']
+            }
+    return jsonify(book)
 
 def add_book():
     pass
@@ -31,14 +40,14 @@ def validate_book(bookObject):
 
 books = [
     {
-        'name':'Becoming a World Class Dev',
-        'price':'45000',
-        'isbn':'12312312'
+        'name': 'Becoming a World Class Dev',
+        'price': 45000,
+        'isbn': 12312312
     },
     {
-        'name':'How to excel in Andela Bootcamp',
-        'price':'12500',
-        'isbn':'123142341'
+        'name': 'How to excel in Andela Bootcamp',
+        'price': 12500,
+        'isbn': 123142341
     }
 ]
 
